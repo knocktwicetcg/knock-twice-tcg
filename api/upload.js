@@ -6,7 +6,9 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
-    const { imageData, fileName } = req.body;
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    const { imageData, fileName } = body;
+
     if (!imageData || !imageData.startsWith("data:")) {
       return res.status(400).json({ error: "No image data" });
     }
